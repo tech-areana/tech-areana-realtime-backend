@@ -1,0 +1,31 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: dev-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .               # ← カレントを build コンテキストに
+    container_name: dev-backend
+    volumes:
+      - ./:/app                # ← ソースをそのままマウント
+      - /app/node_modules      # ← node_modules はコンテナ側で保持
+    ports:
+      - "4020:4020"
+    environment:
+      LOCAL_REDIS: "true"
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      CLIENT_ORIGIN: http://localhost:3000
+      API_URL: http://host.docker.internal:8000
+      NODE_ENV: development
+    depends_on:
+      - redis
+
+volumes:
+  redis-data:
