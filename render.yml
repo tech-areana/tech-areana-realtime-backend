@@ -1,0 +1,19 @@
+services:
+  - type: redis
+    name: redis
+    plan: free            # 必要に応じて Starter 以上
+  - type: web
+    name: socket-backend
+    env: docker
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    plan: starter         # WebSocket があるので Starter 以上
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CLIENT_ORIGIN
+        value: https://your-frontend.onrender.com
+      - key: API_URL
+        value: https://api.example.com
+      - fromService: redis    # Render 自動で REDIS_URL を渡す
+        key: REDIS_URL
