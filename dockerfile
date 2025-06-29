@@ -19,7 +19,7 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 
 # ビルド成果物だけコピー
-COPY --from=build /app/dist ./dist
+COPY --from=build /app/build ./build
 
 # Render が割り当てるポート番号を受け取る
 ENV PORT=$PORT
