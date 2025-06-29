@@ -25,4 +25,5 @@ COPY --from=build /app/build ./build
 ENV PORT=$PORT
 EXPOSE $PORT
 
-CMD ["node", "dist/server.js"]
+CMD ["node", "build/server.js"]
+
